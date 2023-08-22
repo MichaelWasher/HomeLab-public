@@ -1,0 +1,18 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: code
+  name: code
+  namespace: vscode
+spec:
+  host: vscode.apps.mercury.michael-washer.com
+  port:
+    targetPort: 8443
+  to:
+    kind: Service
+    name: code
+    weight: 100
+  tls:
+    termination: edge
+  wildcardPolicy: None

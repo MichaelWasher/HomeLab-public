@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-haas
+spec:
+  selector:
+    matchLabels:
+      app: mysql-haas
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql-haas
+    spec:
+      serviceAccount: mysql-haas
+      serviceAccountName: mysql-haas
+      containers:
+      - name: mysql-haas
+        image: docker.io/mysql:8
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: 500m
+          requests:
+            memory: 128Mi
+            cpu: 100m
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-recorder-pass
+                key: password
+        volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+              subPath: mysql
+        ports:
+        - containerPort: 3306
+        securityContext:
+          runAsUser: 0
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName:  mysql-storage
+

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: overseerr
+  namespace: media
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: overseerr
+  template:
+    metadata:
+      labels:
+        app: overseerr
+    spec:
+      serviceAccount: ombi
+      serviceAccountName: ombi
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+      containers:
+      - name: ombi
+        image: docker.io/sctx/overseerr:latest
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+          requests:
+            memory: 256Mi
+            cpu: 250m
+        env:
+          - name: TZ
+            value: "Australia/Brisbane"
+          - name: DOTNET_GCConserveMemory
+            value: "9"
+        ports:
+          - name: http
+            containerPort: 5055
+        volumeMounts:
+            - mountPath: /config
+              name: config-vol
+      volumes:
+        - name: config-vol
+          persistentVolumeClaim:
+            claimName: overseerr-config

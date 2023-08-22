@@ -1,0 +1,50 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: movies
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: music
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: tv
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: appconfig-jellyfin
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

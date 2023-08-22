@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lidarr
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  rules:
+    - host: 'lidarr.prod.k.michael-washer.dev'
+      http:
+        paths:
+          - backend:
+              service:
+                name: lidarr
+                port:
+                  name: http
+            pathType: Prefix
+            path: /

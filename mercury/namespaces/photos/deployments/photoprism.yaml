@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photoprism-michael
+  namespace: photos
+spec:
+  selector:
+    matchLabels:
+      app: photoprism
+      user: michael
+  strategy:
+    type: Recreate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: photoprism
+        user: michael
+    spec:
+      serviceAccountName: photoprism-michael
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1002
+        runAsUser: 0
+      containers:
+      - name: photoprism
+        image: docker.io/photoprism/photoprism
+        resources:
+          limits:
+            memory: "4Gi"
+            cpu: "1500m"
+          requests:
+           cpu: "10m"
+           memory: "4Gi"
+        ports:
+        - containerPort: 8080
+        env:
+          - name: PHOTOPRISM_GID
+            value: "1002"
+          - name: PHOTOPRISM_HTTP_PORT
+            value: "8080"
+          - name: PHOTOPRISM_ADMIN_USER
+            value: "michael"
+          - name: PHOTOPRISM_ADMIN_PASSWORD
+            value: password
+          - name: PHOTOPRISM_LOG_LEVEL
+            value: info
+          - name: PHOTOPRISM_THUMB_UNCACHED
+            value: "true"
+          - name: PHOTOPRISM_WORKERS
+            value: "2"
+          - name: PHOTOPRISM_JPEG_QUALITY
+            value: "82"
+          - name: PHOTOPRISM_JPEG_SIZE
+            value: "2048"
+          - name: PHOTOPRISM_ORIGINALS_PATH
+            value: /originals
+            #Size limit to import media (20GB for videos)
+          - name: PHOTOPRISM_ORIGINALS_LIMIT
+            value: "20000"
+        volumeMounts:
+        - mountPath: /photoprism
+          name: appconfig-photoprism
+        - mountPath: /originals
+          name: originals
+          readOnly: true
+        # - mountPath: /photoprism/import
+        #   name: imports
+
+      volumes:
+        - name: originals
+          persistentVolumeClaim:
+            claimName: photoprism-original-photos
+        # - name: imports
+        #   persistentVolumeClaim:
+        #     claimName: photoprism-import-photos
+        - name: appconfig-photoprism
+          persistentVolumeClaim:
+            claimName: appconfig-photoprism

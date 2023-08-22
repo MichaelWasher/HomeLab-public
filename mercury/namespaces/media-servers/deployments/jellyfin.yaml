@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+  labels:
+    app: jellyfin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      hostNetwork: false
+      volumes:
+        - name: device
+          hostPath:
+            path: /dev
+        - name: config
+          persistentVolumeClaim:
+            claimName: appconfig-jellyfin
+        - name: jellyfin-movies
+          persistentVolumeClaim:
+            claimName: movies
+        - name: jellyfin-music
+          persistentVolumeClaim:
+            claimName: music
+        - name: jellyfin-tv
+          persistentVolumeClaim:
+            claimName: tv
+      containers:
+        - name: jellyfin
+          image: docker.io/jellyfin/jellyfin:10.8.4-1
+          ports:
+            - name: http
+              containerPort: 8096
+              protocol: TCP
+            - name: local
+              containerPort: 7359
+              protocol: UDP
+            - name: dlna
+              containerPort: 1900
+              protocol: UDP
+          env:
+            - name: TZ
+              value: "Australia/Brisbane"
+            - name: HOME
+              value: /root
+            - name: LANGUAGE
+              value: en_US.UTF-8
+            - name: LANG
+              value: en_US.UTF-8
+            - name: TERM
+              value: xterm
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: compute,video,utility
+            - name: JELLYFIN_PublishedServerUrl
+              value: jellyfin.apps.mercury.michael-washer.com
+          volumeMounts:
+            - name: device
+              mountPath: /dev
+            - name: config
+              mountPath: /config
+            - name: jellyfin-music
+              mountPath: /media/music
+            - name: jellyfin-movies
+              mountPath: /media/movies
+            - name: jellyfin-tv
+              mountPath: /media/tv
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 0
+      serviceAccountName: jellyfin
+      serviceAccount: jellyfin
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

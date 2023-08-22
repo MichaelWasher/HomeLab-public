@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- deluge.yaml
+- firefox-downloads.yaml
+- firefox.yaml
+- frigate.yaml
+- homeassistant.yaml
+- lidarr.yaml
+- media-servers.yaml
+- mysql.yaml
+- photoprism.yaml
+- pihole.yaml
+- prowlarr.yaml
+- radarr.yaml
+- readarr.yaml
+- sonarr.yaml
+- vscode.yaml
+- zigbee2mqtt.yaml
+- nodered.yaml
+- ombi-config.yaml
+- overseerr.yaml

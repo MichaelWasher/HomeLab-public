@@ -1,0 +1,8 @@
+# Home Lab - OpenShift
+A repository to keep OpenShift/Kubernetes manifests and configuration files used with my homelab.
+
+NOTE: There are some old(er) manifests and organisation methods used in this that are slowly being phased out, including the use of Cilium, K3s, KubeVirt, however I am slowly migrating these functions here infavour of 'dog-fooding' the Red Hat OpenShift product suite. This has resulted in providing the `privileged` SCC to many ServiceAccounts that probably don't need it. As there is only a few individuals with access to the cluster and its resources, this is admissable for now, however I would not recommend people follow me down this path to insecurity and DO intend on minimising the accesses provided when I have time to review the applications individually.
+ 
+Additionally, I have tried to structure this like an OpenShift Must-Gather to provide easier access to resources and future integration with the `omc`/`omg` tools. These manifests used to be heavily dependent on Helm and OpenShift Operators. I have moved away from this approach due to the complexity/limitations it adds for the small convenience I can get from using `Ctrl + Shift + F` in a text editor, however I know this will not scale indefinitely.
+
+The secrets SHOULD be encrypted using SOPS while I configure Vault and igrate the credentials accross. If you locate one that is not, please let me know so I can remove/replace the leaked credentials. 

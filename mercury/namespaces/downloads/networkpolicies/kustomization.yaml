@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- allow-all-to-socks.yaml
+- allow-arr-to-arr.yaml
+- allow-arr-to-deluge.yaml
+- allow-firefox-to-deluge.yaml
+- allow-tailscale-to-all.yaml
+- default-deny-all.yaml
+- allow-ingresscontroller-to-arr.yaml
+- allow-ingresscontroller-to-firefox.yaml
+- allow-media-servers-to-arr.yaml
+- allow-firefox-to-arr.yaml

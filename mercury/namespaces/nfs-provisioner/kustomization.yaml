@@ -1,0 +1,16 @@
+#
+# For more information about the NFS Subdir Provisioner, check the following Github link:
+# https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner
+#
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: nfs-provisioner
+
+resources:
+- ns.yaml
+- rbac
+- github.com/kubernetes-sigs/nfs-subdir-external-provisioner//deploy
+
+patches:
+- path: deployment-patch.yaml

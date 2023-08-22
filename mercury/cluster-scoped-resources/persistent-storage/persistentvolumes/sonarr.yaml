@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: appconfig-sonarr
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: appconfig-sonarr
+    namespace: downloads
+  storageClassName: manual
+  capacity:
+    storage: 50Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Sonarr
+    server: 192.168.1.100
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-tv-sonarr
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  claimRef:
+    name: media-tv-sonarr
+    namespace: downloads
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /TV
+    server: 192.168.1.100
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: torrents-sonarr
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: torrents-sonarr
+    namespace: downloads
+  storageClassName: manual
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Torrents
+    server: 192.168.1.100

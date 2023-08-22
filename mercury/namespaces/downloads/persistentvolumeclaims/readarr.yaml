@@ -1,0 +1,34 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: appconfig-readarr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: media-books-readarr
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: torrents-readarr
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi

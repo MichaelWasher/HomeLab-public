@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nodered-config
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  claimRef:
+    name: nodered-config
+    namespace: home-automation
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+      path: /NodeRed
+      server: 192.168.1.100

@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: appconfig-lidarr
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: appconfig-lidarr
+    namespace: downloads
+  storageClassName: manual
+  capacity:
+    storage: 50Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Lidarr
+    server: 192.168.1.100
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-music-lidarr
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  claimRef:
+    name: media-music-lidarr
+    namespace: downloads
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Music
+    server: 192.168.1.100
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: torrents-lidarr
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: torrents-lidarr
+    namespace: downloads
+  storageClassName: manual
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Torrents
+    server: 192.168.1.100

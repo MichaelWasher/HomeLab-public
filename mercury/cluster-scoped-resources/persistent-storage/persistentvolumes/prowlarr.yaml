@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: appconfig-prowlarr
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: appconfig-prowlarr
+    namespace: downloads
+  storageClassName: manual
+  capacity:
+    storage: 50Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Prowlarr
+    server: 192.168.1.100

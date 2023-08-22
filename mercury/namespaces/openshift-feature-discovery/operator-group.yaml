@@ -1,0 +1,8 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: openshift-node-feature-discovery
+  namespace: openshift-feature-discovery
+spec:
+  targetNamespaces:
+  - openshift-feature-discovery

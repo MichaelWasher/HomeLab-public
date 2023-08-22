@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+  namespace: pihole
+  labels:
+    app: pihole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      serviceAccountName: pihole
+      serviceAccount: pihole
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          # upstream DNS used by pihole.
+          - 1.1.1.1
+      containers:
+        - name: pihole
+          # https://hub.docker.com/r/pihole/pihole/tags
+          image: pihole/pihole:2021.10
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: "Australia/Brisbane"
+            - name: WEBPASSWORD
+              value: admin
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: 53
+              protocol: TCP
+            - containerPort: 53
+              protocol: UDP
+            - containerPort: 67
+              protocol: UDP
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 443
+              protocol: TCP
+          volumeMounts:
+            - name: appconfig-pihole
+              mountPath: /etc/pihole
+              subPath: etc
+            - name: appconfig-pihole
+              mountPath: /etc/dnsmasq.d
+              subPath: dnsmasq
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 2Gi
+              cpu: 1
+      volumes:
+        - name: appconfig-pihole
+          persistentVolumeClaim:
+            claimName: appconfig-pihole

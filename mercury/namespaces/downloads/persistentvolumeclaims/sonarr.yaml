@@ -1,0 +1,35 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: appconfig-sonarr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+  storageClassName: manual
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: media-tv-sonarr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: manual
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: torrents-sonarr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: manual

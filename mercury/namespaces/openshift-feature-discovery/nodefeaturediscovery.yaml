@@ -1,0 +1,95 @@
+apiVersion: nfd.openshift.io/v1
+kind: NodeFeatureDiscovery
+metadata:
+  name: node-features
+  namespace: openshift-feature-discovery
+spec:
+  instance: "" # instance is empty by default
+  topologyUpdater: false # False by default
+  operand:
+    image: registry.redhat.io/openshift4/ose-node-feature-discovery:v4.12
+    imagePullPolicy: Always
+  workerConfig:
+    configData: |
+      core:
+      #  labelWhiteList:
+      #  noPublish: false
+        sleepInterval: 60s
+      #  sources: [all]
+      #  klog:
+      #    addDirHeader: false
+      #    alsologtostderr: false
+      #    logBacktraceAt:
+      #    logtostderr: true
+      #    skipHeaders: false
+      #    stderrthreshold: 2
+      #    v: 0
+      #    vmodule:
+      ##   NOTE: the following options are not dynamically run-time configurable
+      ##         and require a nfd-worker restart to take effect after being changed
+      #    logDir:
+      #    logFile:
+      #    logFileMaxSize: 1800
+      #    skipLogHeaders: false
+      sources:
+        cpu:
+          cpuid:
+      #     NOTE: whitelist has priority over blacklist
+            attributeBlacklist:
+              - "BMI1"
+              - "BMI2"
+              - "CLMUL"
+              - "CMOV"
+              - "CX16"
+              - "ERMS"
+              - "F16C"
+              - "HTT"
+              - "LZCNT"
+              - "MMX"
+              - "MMXEXT"
+              - "NX"
+              - "POPCNT"
+              - "RDRAND"
+              - "RDSEED"
+              - "RDTSCP"
+              - "SGX"
+              - "SSE"
+              - "SSE2"
+              - "SSE3"
+              - "SSE4.1"
+              - "SSE4.2"
+              - "SSSE3"
+            attributeWhitelist:
+        usb:
+          deviceClassWhitelist:
+            - "0e"
+            - "ef"
+            - "fe"
+            - "ff"
+            - "02"
+        pci:
+          deviceClassWhitelist:
+            - "0200"
+            - "03"
+            - "12"
+          deviceLabelFields: [class, vendor, device]
+        custom:
+        - name: "intel.gpu"
+          labels:
+            "intel.feature.node.kubernetes.io/gpu": "true"
+          matchFeatures:
+            - feature: pci.device
+              matchExpressions:
+                vendor: {op: In, value: ["8086"]}
+                class: {op: In, value: ["0300", "0380"]}
+            - feature: kernel.loadedmodule
+              matchExpressions:
+                i915: {op: Exists}
+        - name: "zigbee.usb"
+          labels:
+            "zigbee-gateway": "true"
+          matchFeatures:
+            - feature: usb.device
+              matchExpressions:
+                vendor: {op: In, value: ["1a86"]}
+                device: {op: In, value: ["55d4"]}

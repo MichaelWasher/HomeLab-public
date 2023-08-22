@@ -1,0 +1,21 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-arr-to-arr
+spec:
+  podSelector:
+    matchLabels:
+      app-group: arr
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app-group: arr
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app-group: arr
+  policyTypes:
+    - Ingress
+    - Egress

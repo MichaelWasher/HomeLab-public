@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: appconfig-vscode
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: appconfig-vscode
+    namespace: vscode
+  storageClassName: manual
+  capacity:
+    storage: 50Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /VSCode
+    server: 192.168.1.100
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: vscode-sourcecode
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  claimRef:
+    name: vscode-sourcecode
+    namespace: vscode
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /SourceCode
+    server: 192.168.1.100

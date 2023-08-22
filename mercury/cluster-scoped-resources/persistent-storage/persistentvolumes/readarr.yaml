@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: appconfig-readarr
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: appconfig-readarr
+    namespace: downloads
+  storageClassName: manual
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Readarr
+    server: 192.168.1.100
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-books-readarr
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  claimRef:
+    name: media-books-readarr
+    namespace: downloads
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Books
+    server: 192.168.1.100
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: torrents-readarr
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: torrents-readarr
+    namespace: downloads
+  storageClassName: manual
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Torrents
+    server: 192.168.1.100

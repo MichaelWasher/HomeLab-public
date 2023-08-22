@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - prowlarr.yaml
+  - sonarr.yaml
+  - radarr.yaml
+  - readarr.yaml
+  - lidarr.yaml
+  - deluge.yaml
+  - firefox.yaml

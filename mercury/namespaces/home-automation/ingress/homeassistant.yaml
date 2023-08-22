@@ -1,0 +1,19 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    name: haas-web
+  name: homeassistant
+  namespace: automation
+spec:
+  host: homeassistant.apps.mercury.michael-washer.com
+  path: /
+  to:
+    kind: Service
+    name: homeassistant
+    weight: 100
+  wildcardPolicy: None
+  tls:
+    termination: edge   
+    insecureEdgeTerminationPolicy: Redirect
+

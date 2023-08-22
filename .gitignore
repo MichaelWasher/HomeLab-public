@@ -1,0 +1,7 @@
+.decrypted*
+.DS_STORE
+.DS_Store
+tmp/*
+saturn/
+mars/
+venus/

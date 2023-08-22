@@ -1,0 +1,150 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gluetun
+  labels:
+    app: gluetun
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gluetun
+  template:
+    metadata:
+      name: gluetun
+      labels:
+        app: gluetun
+        vpnCountry: switzerland
+    spec:
+      automountServiceAccountToken: false
+      serviceAccountName: gluetun
+      containers:
+        - name: socks
+          securityContext:
+            capabilities:
+              add: 
+                - "NET_ADMIN"
+          image: docker.io/serjs/go-socks5-proxy
+          resources:
+            limits:
+              memory: 128Mi
+              cpu: 500m
+            requests:
+              cpu: 20m
+              memory: 128Mi
+          ports:
+          - name: socks5
+            containerPort: 1080
+            protocol: TCP
+
+        - name: ssocks
+          image: ghcr.io/shadowsocks/ssserver-rust
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 500m
+            requests:
+              cpu: 20m
+              memory: 256Mi
+          volumeMounts:
+          - name: config
+            mountPath: /etc/shadowsocks-rust
+            readOnly: true
+          ports:
+          - name: ssocks
+            containerPort: 8388
+            protocol: TCP
+          # livenessProbe:
+          #   tcpSocket:
+          #     port: 8388
+          #   failureThreshold: 3
+          #   initialDelaySeconds: 10
+          #   timeoutSeconds: 1
+          # readinessProbe:
+          #   tcpSocket:
+          #     port: 8388
+          #   initialDelaySeconds: 2
+
+        - name: gluetun
+          securityContext:
+            privileged: true
+            capabilities:
+              add: 
+                - "NET_ADMIN"
+            runAsUser: 0
+          image: docker.io/qmcgaw/gluetun
+          resources:
+            limits:
+              memory: 750Mi
+              cpu: 500m
+            requests:
+              cpu: 20m
+              memory: 750Mi
+          env:
+            # NOTE: This is required for running Gluetun in OpenShift due to CRI-O default mount configurations in OCP.
+            # https://github.com/cri-o/cri-o/blame/main/docs/crio.conf.5.md#L219-L227
+            - name: OPENVPN_KEY_PASSPHRASE_SECRETFILE
+              value: /run/secrets/openvpn_config/openvpn_key_passphrase
+            - name: OPENVPN_ENCRYPTED_KEY_SECRETFILE
+              value: /run/secrets/openvpn_config/openvpn_encrypted_key
+            - name: HTTPPROXY_PASSWORD_SECRETFILE
+              value: /run/secrets/openvpn_config/httpproxy_password
+            - name: OPENVPN_PASSWORD_SECRETFILE
+              value: /run/secrets/openvpn_config/openvpn_password
+            - name: HTTPPROXY_USER_SECRETFILE
+              value: /run/secrets/openvpn_config/httpproxy_user
+            - name: OPENVPN_USER_SECRETFILE
+              value: /run/secrets/openvpn_config/openvpn_user
+            - name: SHADOWSOCKS_PASSWORD_SECRETFILE
+              value: /run/secrets/openvpn_config/shadowsocks_password
+            - name: OPENVPN_CLIENTCRT_SECRETFILE
+              value: /run/secrets/openvpn_config/openvpn_clientcrt
+            - name: OPENVPN_CLIENTKEY_SECRETFILE
+              value: /run/secrets/openvpn_config/openvpn_clientkey
+            # ENDNOTE -------------------------------------------------------------------
+            # NOTE: This is required for OVN Kubernetes CNI due to overheads with the MTU
+            - name: OPENVPN_FLAGS
+              value: "--tun-mtu 1300"
+            #ENDNOTE
+            - name: FIREWALL
+              value: "off"
+            - name: VPN_SERVICE_PROVIDER
+              value: "cyberghost"
+            - name: SERVER_COUNTRIES
+              value: Switzerland
+            - name: GOMEMLIMIT
+              value: "700MiB"
+            - name: GOGC
+              value: "20"
+            - name: SHADOWSOCKS
+              value: "off"
+            - name: FIREWALL_OUTBOUND_SUBNETS
+              value: "10.0.0.0/8"
+            - name: FIREWALL_INPUT_PORTS
+              value: "8388,8888,1080"
+            - name: HEALTH_SUCCESS_WAIT_DURATION
+              value: "600s"
+            - name: HTTPPROXY
+              value: "off"
+            - name: HTTPPROXY_STEALTH
+              value: "on"
+          volumeMounts:
+            - name: auth-secret
+              mountPath: /run/secrets/openvpn_config
+      # NOTE: This is required due to issues with Alpine resolver (musl)
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1 
+        options:
+          - name: ndots
+            value: "1"
+      # ENDNOTE
+      volumes:
+        - name: auth-secret
+          secret:
+            secretName: cyberghost-credentials
+        - name: config
+          configMap:
+            name: shadowsocks-server

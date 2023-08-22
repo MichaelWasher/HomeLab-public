@@ -1,0 +1,35 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-deluge-to-firefox
+spec:
+  podSelector:
+    matchLabels:
+      app: deluge
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app-group: arr
+        - podSelector:
+            matchLabels:
+              app: firefox
+  policyTypes:
+    - Ingress
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-firefox-to-deluge
+spec:
+  podSelector:
+    matchLabels:
+      app: firefox
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: deluge
+  policyTypes:
+    - Egress

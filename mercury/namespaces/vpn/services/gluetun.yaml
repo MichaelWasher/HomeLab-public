@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gluetun
+spec:
+  type: ClusterIP
+  selector:
+    app: gluetun
+  ports:
+    - targetPort: 8888
+      port: 80
+      protocol: TCP
+      name: http-proxy
+    - targetPort: 8388
+      port: 8388
+      protocol: TCP
+      name: shadow-socks-tcp
+    - targetPort: 8388
+      port: 8388
+      protocol: UDP
+      name: shadow-socks-udp
+    - targetPort: 1080
+      port: 1080
+      protocol: TCP
+      name: socks5

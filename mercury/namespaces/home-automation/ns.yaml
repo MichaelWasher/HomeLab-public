@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/node-selector: 'feature.node.kubernetes.io/zigbee-gateway=true'
+  labels:
+    kubernetes.io/metadata.name: home-automation
+  name: home-automation
+spec: {}

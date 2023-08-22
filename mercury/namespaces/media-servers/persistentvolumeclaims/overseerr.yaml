@@ -1,0 +1,12 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: overseerr-config
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi

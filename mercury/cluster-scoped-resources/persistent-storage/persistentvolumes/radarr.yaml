@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: appconfig-radarr
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: appconfig-radarr
+    namespace: downloads
+  storageClassName: manual
+  capacity:
+    storage: 50Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Radarr
+    server: 192.168.1.100
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-movies-radarr
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  claimRef:
+    name: media-movies-radarr
+    namespace: downloads
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Movies
+    server: 192.168.1.100
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: torrents-radarr
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: torrents-radarr
+    namespace: downloads
+  storageClassName: manual
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Torrents
+    server: 192.168.1.100

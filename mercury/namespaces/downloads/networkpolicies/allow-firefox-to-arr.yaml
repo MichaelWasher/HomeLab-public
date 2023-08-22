@@ -1,0 +1,32 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-arr-to-firefox
+spec:
+  podSelector:
+    matchLabels:
+      app-group: arr
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: firefox
+  policyTypes:
+    - Ingress
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-firefox-to-arr
+spec:
+  podSelector:
+    matchLabels:
+      app: firefox
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app-group: arr
+  policyTypes:
+    - Egress

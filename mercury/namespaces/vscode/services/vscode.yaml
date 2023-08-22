@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: code
+  name: code
+spec:
+  ports:
+  - port: 8443
+  selector:
+    app: code
+  type: LoadBalancer

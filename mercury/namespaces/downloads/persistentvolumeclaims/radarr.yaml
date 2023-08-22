@@ -1,0 +1,35 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: appconfig-radarr
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: media-movies-radarr
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: torrents-radarr
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi

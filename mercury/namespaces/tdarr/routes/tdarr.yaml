@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: tdarr
+  namespace: tdarr
+spec:
+  host: tdarr.apps.mercury.michael-washer.com
+  port:
+    targetPort: 8265
+  to:
+    kind: Service
+    name: tdarr
+    weight: 100
+  wildcardPolicy: None

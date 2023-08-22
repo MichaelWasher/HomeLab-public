@@ -1,0 +1,40 @@
+apiVersion: v1
+items:
+- apiVersion: org.eclipse.che/v2
+  kind: CheCluster
+  metadata:
+    annotations:
+      che.eclipse.org/checluster-defaults-cleanup: '{"containers.resources":"true","spec.components.dashboard.headerMessage":"true","spec.components.pluginRegistry.openVSXURL":"true","spec.devEnvironments.defaultComponents":"true","spec.devEnvironments.defaultEditor":"true","spec.devEnvironments.disableContainerBuildCapabilities":"true"}'
+    name: che-cluster
+    namespace: che-cluster
+  spec:
+    components:
+      cheServer:
+        debug: false
+        logLevel: INFO
+      imagePuller:
+        enable: false
+      metrics:
+        enable: true
+    devEnvironments:
+      containerBuildConfiguration:
+        openShiftSecurityContextConstraint: container-build
+      defaultEditor: cdr/code-server/latest
+      defaultNamespace:
+        autoProvision: true
+        template: <username>-development-workspace
+      maxNumberOfWorkspacesPerUser: -1
+      secondsOfInactivityBeforeIdling: 1800
+      secondsOfRunBeforeIdling: -1
+      startTimeoutSeconds: 300
+      storage:
+        pvcStrategy: per-user
+    networking:
+      auth:
+        gateway:
+          configLabels:
+            app: che
+            component: che-gateway-config
+kind: List
+metadata:
+  resourceVersion: ""

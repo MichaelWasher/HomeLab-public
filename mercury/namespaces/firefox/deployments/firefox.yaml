@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: firefox
+  labels:
+    app: firefox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: firefox
+  template:
+    metadata:
+      labels:
+        app: firefox
+    spec:
+      serviceAccount: firefox
+      serviceAccountName: firefox
+      containers:
+      - image: lscr.io/linuxserver/firefox:latest
+        name: firefox
+        volumeMounts:
+        - name: appconfig-firefox
+          mountPath: /config
+        ports:
+        - containerPort: 3000
+        resources: {}
+        securityContext:
+          privileged: true
+          runAsUser: 0
+      volumes:
+      - name: appconfig-firefox
+        persistentVolumeClaim:
+          claimName: appconfig-firefox
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prowlarr
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  rules:
+    - host: 'prowlarr.prod.k.michael-washer.dev'
+      http:
+        paths:
+          - backend:
+              service:
+                name: prowlarr
+                port:
+                  name: http
+            pathType: Prefix
+            path: /

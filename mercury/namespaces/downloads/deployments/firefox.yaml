@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: firefox
+  labels:
+    app: firefox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: firefox
+  template:
+    metadata:
+      labels:
+        app: firefox
+    spec:
+      serviceAccount: firefox
+      serviceAccountName: firefox
+      containers:
+      - image: lscr.io/linuxserver/firefox:latest
+        name: firefox
+        volumeMounts:
+        - name: appconfig-firefox
+          mountPath: /config
+        ports:
+        - containerPort: 3000
+        resources: {}
+        securityContext:
+          privileged: true
+          runAsUser: 0
+      # NOTE: Required due to Gluetun limitations and blocked DNS
+      # For more information, see: https://github.com/qdm12/dns/issues/109
+      # TODO: Remove when resolved
+      hostAliases:
+      - hostnames:
+        - lidarr.downloads.svc.cluster.local
+        ip: 172.30.60.60
+      - hostnames:
+        - prowlarr.downloads.svc.cluster.local
+        ip: 172.30.54.50
+      - hostnames:
+        - radarr.downloads.svc.cluster.local
+        ip: 172.30.161.79
+      - hostnames:
+        - readarr.downloads.svc.cluster.local
+        ip: 172.30.40.47
+      - hostnames:
+        - sonarr.downloads.svc.cluster.local
+        ip: 172.30.38.45
+      - hostnames:
+        - switzerland.vpn.svc.cluster.local
+        ip: 172.30.211.33
+      - hostnames:
+        - deluge.downloads.svc.cluster.local
+        ip: 172.30.57.131 
+      # ENDNOTE ----------
+      volumes:
+      - name: appconfig-firefox
+        persistentVolumeClaim:
+          claimName: appconfig-firefox-downloads
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

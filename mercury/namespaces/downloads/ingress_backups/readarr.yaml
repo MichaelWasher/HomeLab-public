@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: readarr
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  rules:
+    - host: 'readarr.prod.k.michael-washer.dev'
+      http:
+        paths:
+          - backend:
+              service:
+                name: readarr
+                port:
+                  name: http
+            pathType: Prefix
+            path: /

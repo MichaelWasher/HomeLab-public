@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: photoprism-michael
+  namespace: photos
+spec:
+  selector:
+    app: photoprism
+    user: michael
+  ports:
+  - port: 80
+    targetPort: 8080
+

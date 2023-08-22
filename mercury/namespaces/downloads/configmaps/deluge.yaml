@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: deluge-scripts
+data:
+  cleanup.sh: |
+    #! /bin/bash
+    find /downloads/ | grep -Ff <(find /downloads/ -name "*.rar" -exec unrar lb {} \; )
+    find /downloads/ | grep -Ff <(find /downloads/ -name "*.rar" -exec unrar lb {} \; ) | xargs -n 1 rm -r
+  unrar.sh: |
+    #! /bin/bash
+
+    function checkrar
+    {
+      dir=$(dirname "$1")
+      file=$(basename "$1")
+
+      echo Checking "$1"
+      
+      checkfile=$dir/$( basename "$( unrar lb "$1" | head -n1 )" )
+
+      echo check "$checkfile"
+      if [[ ! -f "$checkfile" ]]
+      then
+        cd "$dir" && nice ionice -c 3 unrar x -ep -y "$file" || true
+      fi
+
+    }
+    export -f checkrar
+
+    torrentid=$1
+    torrentname=$2
+    torrentpath=$3
+    fullpath="$3""$2"
+
+    echo "Torrent Details: " Name: "$torrentname" Path: "$torrentpath" ID: "$torrentid" FullPath: "$fullpath" >> /config/unrar.log
+    rarfile="$(find "$fullpath" -name "*rar" -type f | head -n 1)"
+
+    if [[ ! -z "$rarfile" ]] && [[ -f "$rarfile" ]]
+    then
+      echo Checking "$rarfile"
+      checkrar "$rarfile" 2>&1 >> /config/unrar.log
+    else
+      echo "Skipped no rar file "
+    fi
+

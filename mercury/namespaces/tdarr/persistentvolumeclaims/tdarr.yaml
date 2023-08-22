@@ -1,0 +1,63 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: appconfig-tdarr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+  storageClassName: manual
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: appconfig-tdarr-server
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+  storageClassName: manual
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: media-tdarr-cache
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+  storageClassName: manual
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: media-tdarr
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+
+# ---
+# kind: PersistentVolumeClaim
+# apiVersion: v1
+# metadata:
+#   name: torrents-deluge
+# spec:
+#   storageClassName: manual
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 100Gi

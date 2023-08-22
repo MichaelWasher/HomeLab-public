@@ -1,0 +1,144 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deluge
+  labels:
+    app: deluge
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deluge
+  template:
+    metadata:
+      name: deluge-pod
+      labels:
+        app: deluge
+    spec:
+      serviceAccountName: deluge
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      initContainers:
+        - name: iptables-init
+          imagePullPolicy: IfNotPresent
+          image: quay.io/tidawson/shadowsocks:latest
+          args: 
+            - sh
+            - /etc/shadowsocks-rust/iptables.sh
+          volumeMounts:
+          - name: config
+            mountPath: /etc/shadowsocks-rust
+            readOnly: true
+          securityContext:
+            runAsUser: 0
+            privileged: true
+      containers:
+        - name: deluge  
+          imagePullPolicy: IfNotPresent
+          image: ghcr.io/linuxserver/deluge:latest
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Pacific/Auckland"
+            - name: DELUGE_LOGLEVEL
+              value: debug
+          ports:
+            - containerPort: 50123 #utp
+              protocol: TCP
+            - containerPort: 50123 #utp
+              hostPort: 50123
+              protocol: UDP
+            - containerPort: 8112 #Web
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: config-vol
+            - mountPath: /downloads
+              name: download-vol
+            - mountPath: /scripts
+              name: script-vol
+            - mountPath: /bulk
+              name: bulk
+              subPath: seed
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: 500m
+            requests:
+              cpu: 10m
+              memory: 512Mi
+          securityContext:
+            runAsUser: 0
+        - name: vpn-sidecar
+          imagePullPolicy: Always
+          image: ghcr.io/shadowsocks/sslocal-rust
+          resources:
+            limits: 
+              cpu: 200m
+              memory: 256Mi
+            requests: 
+              cpu: 10m
+              memory: 128Mi
+          volumeMounts:
+          - name: config
+            mountPath: /etc/shadowsocks-rust
+            readOnly: true
+          securityContext:
+            runAsUser: 0
+            capabilities:
+              add: 
+              - "NET_ADMIN"
+      # NOTE: Required due to Gluetun limitations and blocked DNS
+      # For more information, see: https://github.com/qdm12/dns/issues/109
+      # TODO: Remove when resolved
+      hostAliases:
+      - hostnames:
+        - lidarr.downloads.svc.cluster.local
+        ip: 172.30.60.60
+      - hostnames:
+        - prowlarr.downloads.svc.cluster.local
+        ip: 172.30.54.50
+      - hostnames:
+        - radarr.downloads.svc.cluster.local
+        ip: 172.30.161.79
+      - hostnames:
+        - readarr.downloads.svc.cluster.local
+        ip: 172.30.40.47
+      - hostnames:
+        - sonarr.downloads.svc.cluster.local
+        ip: 172.30.38.45
+      - hostnames:
+        - switzerland.vpn.svc.cluster.local
+        ip: 172.30.211.33
+      - hostnames:
+        - deluge.downloads.svc.cluster.local
+        ip: 172.30.57.131 
+      # ENDNOTE ----------
+      volumes:
+        - name: download-vol
+          persistentVolumeClaim:
+            claimName: torrents-deluge
+        - name: config-vol
+          persistentVolumeClaim:
+            claimName: appconfig-deluge
+        - name: script-vol
+          configMap:
+            name: deluge-scripts
+            defaultMode: 0777
+        - name: bulk
+          persistentVolumeClaim:
+            claimName: media-deluge
+        - name: config
+          configMap:
+            name: shadowsocks-client

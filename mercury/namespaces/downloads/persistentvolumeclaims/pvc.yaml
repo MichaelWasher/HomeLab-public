@@ -1,0 +1,76 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: torrent-media-tv
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: torrent-media-books
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: torrent-media-movies
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: torrent-media-music
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: torrent-media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: downloads
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: appconfig-deluge-plugins
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi

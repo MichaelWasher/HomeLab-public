@@ -1,0 +1,136 @@
+apiVersion: v1
+data:
+  config.yml: |
+    ui:
+      live_mode: mse
+    logger:
+      default: info
+    record:
+      enabled: true
+      events:
+        pre_capture: 20
+        post_capture: 30
+        objects:
+          - person
+          - car
+          - cat
+          - dog
+          - motorcycle
+          - bicycle
+        retain:
+          default: 10
+          mode: active_objects
+          objects:
+            person: 20
+            car: 3
+    birdseye:
+      enabled: true
+      mode: motion
+    #rtmp:
+    #  enabled: false
+    ffmpeg:
+      # https://github.com/blakeblackshear/frigate/blob/v0.12.0-beta8/frigate/ffmpeg_presets.py
+      #hwaccel_args: preset-vaapi
+      #global_args: ""
+      #input_args:
+      output_args:
+        #record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v copy -c:a aac
+        record: preset-record-generic-audio-copy
+    detectors:
+      #cpu1:
+      #  type: cpu
+      #  num_threads: 1
+      ov:
+        type: openvino
+        device: AUTO
+        model:
+          path: /openvino-model/ssdlite_mobilenet_v2.xml
+    model:
+      width: 300
+      height: 300
+      input_tensor: nhwc
+      input_pixel_format: bgr
+      labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+    mqtt:
+      host: mqtt.home-automation.svc
+    go2rtc:
+      streams:
+        garage:
+          - rtsp://192.168.1.122/stream1
+          - "ffmpeg:garage#audio=aac"
+        frontdoor:
+          - rtsp://192.168.1.121/stream1
+          - "ffmpeg:frontdoor#audio=aac"
+        backdoor:
+          - rtsp://192.168.1.123/stream1
+          - "ffmpeg:backdoor#audio=aac"
+        sidedoor:
+          - rtsp://192.168.1.124/stream1
+          - "ffmpeg:sidedoor#audio=aac"
+        doorbell:
+          - "ffmpeg:https://192.168.1.125/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=SJpn3Jvip6ZBASGC#video=copy#audio=copy#audio=opus"
+    cameras:
+        # Define at least one camera
+        garage:
+          ffmpeg:
+            inputs:
+              - path: rtsp://192.168.1.122/stream2
+                roles:
+                  - detect
+              - path: rtsp://127.0.0.1:8554/garage
+                input_args: preset-rtsp-restream
+                roles:
+                  - record
+          detect:
+            width: 704
+            height: 576
+        frontdoor:
+          ffmpeg:
+            inputs:
+              - path: rtsp://192.168.1.121/stream2
+                roles:
+                  - detect
+              - path: rtsp://127.0.0.1:8554/frontdoor
+                input_args: preset-rtsp-restream
+                roles:
+                  - record
+          detect:
+            width: 704
+            height: 576
+        backdoor:
+          ffmpeg:
+            inputs:
+              - path: rtsp://192.168.1.123/stream2
+                roles:
+                  - detect
+              - path: rtsp://127.0.0.1:8554/backdoor
+                input_args: preset-rtsp-restream
+                roles:
+                  - record
+          detect:
+            width: 704
+            height: 576
+        sidedoor:
+          ffmpeg:
+            inputs:
+              - path: rtsp://192.168.1.124/stream2
+                roles:
+                  - detect
+              - path: rtsp://127.0.0.1:8554/sidedoor
+                input_args: preset-rtsp-restream
+                roles:
+                  - record
+          detect:
+            width: 704
+            height: 576
+
+        doorbell:
+          ffmpeg:
+            inputs:
+              - path: rtsp://127.0.0.1:8554/doorbell?video=copy&audio=aac
+                input_args: preset-rtsp-restream
+                roles:
+                  - record
+kind: ConfigMap
+metadata:
+  name: frigate-config

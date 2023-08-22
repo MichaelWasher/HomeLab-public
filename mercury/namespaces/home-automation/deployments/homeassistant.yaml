@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haas
+spec:
+  selector:
+    matchLabels:
+      app: haas
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: haas
+    spec:
+      serviceAccount: homeassistant
+      serviceAccountName: homeassistant
+      # DNS Config Required to enable Alpine/musl libc images
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "1"
+      containers:
+      - name: haas
+        image: ghcr.io/home-assistant/home-assistant:stable
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: 1
+          requests:
+            memory: "256Mi"
+            cpu: 300m
+        securityContext:
+          runAsUser: 0
+          privileged: true
+        ports:
+        - containerPort: 8123
+        volumeMounts:
+            - mountPath: "/config"
+              name: ha-storage
+            - mountPath: /dev/
+              name: devices
+      volumes:
+        - name: ha-storage
+          persistentVolumeClaim:
+            claimName: homeassistant-config
+        - name: devices
+          hostPath:
+            path: /dev
+            type: Directory

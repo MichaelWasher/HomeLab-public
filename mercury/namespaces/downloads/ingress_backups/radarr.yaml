@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: radarr
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  rules:
+    - host: 'radarr.prod.k.michael-washer.dev'
+      http:
+        paths:
+          - backend:
+              service:
+                name: radarr
+                port:
+                  name: http
+            pathType: Prefix
+            path: /

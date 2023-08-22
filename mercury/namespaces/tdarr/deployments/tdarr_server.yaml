@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tdarr-server
+  labels:
+    app: tdarr-server
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tdarr-server
+  template:
+    metadata:
+      name: tdarr-server
+      labels:
+        app: tdarr-server
+    spec:
+      securityContext:
+        fsGroup: 1000
+      serviceAccount: tdarr
+      serviceAccountName: tdarr
+      automountServiceAccountToken: false
+      containers:
+        - name: tdarr-server  
+          imagePullPolicy: IfNotPresent
+          image: docker.io/haveagitgat/tdarr
+          resources:
+            limits:
+              memory: 1Gi
+              cpu: 1
+              gpu.intel.com/i915: "1"
+            requests:
+              cpu: "10m"
+              memory: 1Gi
+              gpu.intel.com/i915: "1"
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: internalNode
+              value: "true"
+            - name: webUIPort
+              value: "8265"
+            - name: serverPort
+              value: "8266"
+            - name: serverIP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: UMASK_SET
+              value: "022"
+            - name: TZ
+              value: "Australia/Brisbane"
+            - name: nodeID
+              value: server
+          ports:
+            - containerPort: 8266
+              name: server
+            - containerPort: 8265
+              name: web
+          volumeMounts:
+            - mountPath: /app/logs
+              name: appconfig-tdarr
+              subPath: logs
+            - name: cache
+              mountPath: /temp
+            - name: media-tdarr
+              mountPath: /media
+            - name: appconfig-tdarr
+              mountPath: /app/configs
+            - name: appconfig-tdarr
+              mountPath: /app/server
+      volumes:
+        - name: appconfig-tdarr
+          persistentVolumeClaim:
+            claimName: appconfig-tdarr-server
+        - name: media-tdarr
+          persistentVolumeClaim:
+            claimName: media-tdarr
+        - name: cache
+          persistentVolumeClaim:
+            claimName: media-tdarr-cache

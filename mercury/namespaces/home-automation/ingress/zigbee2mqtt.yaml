@@ -1,0 +1,19 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    name: zigbee2mqtt
+  name: zigbee2mqtt
+  namespace: home-automation
+spec:
+  host: zigbee2mqtt.apps.mercury.michael-washer.com
+  path: /
+  to:
+    kind: Service
+    name: zigbee2mqtt
+    weight: 100
+  wildcardPolicy: None
+  tls:
+    termination: edge   
+    insecureEdgeTerminationPolicy: Redirect
+

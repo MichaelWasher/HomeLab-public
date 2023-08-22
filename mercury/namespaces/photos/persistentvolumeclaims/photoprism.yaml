@@ -1,0 +1,38 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: appconfig-photoprism
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+
+# ---
+# kind: PersistentVolumeClaim
+# apiVersion: v1
+# metadata:
+#   name: photoprism-import-photos
+# spec:
+#   storageClassName: manual
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 100Gi
+      
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: photoprism-original-photos
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi

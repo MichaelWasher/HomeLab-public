@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-haas
+spec:
+  selector:
+    app: mysql-haas
+  ports:
+  - port: 3306
+    targetPort: 3306

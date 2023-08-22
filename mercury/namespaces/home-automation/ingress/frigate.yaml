@@ -1,0 +1,17 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: frigate
+spec:
+  host: frigate.apps.mercury.michael-washer.com
+  path: /
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: frigate
+    weight: 100
+  wildcardPolicy: None
+  tls:
+      termination: edge   
+      insecureEdgeTerminationPolicy: Redirect

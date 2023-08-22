@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: tdarr-node
+spec:
+  selector:
+    matchLabels:
+      app: tdarr-node
+  template:
+    metadata:
+      labels:
+        app: tdarr-node
+    spec:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      serviceAccount: tdarr
+      serviceAccountName: tdarr
+      automountServiceAccountToken: false
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: "true"
+      containers:
+        - name: tdarr
+          image: ghcr.io/haveagitgat/tdarr_node
+          resources:
+            requests:
+              cpu: 10m
+              memory: 1Gi
+              gpu.intel.com/i915: "1"
+            limits:
+              cpu: 1
+              memory: 1Gi
+              gpu.intel.com/i915: "1"
+          volumeMounts:
+            - mountPath: /app/logs
+              name: appconfig-tdarr
+              subPath: logs
+            - name: cache
+              mountPath: /temp
+            - name: media-tdarr
+              mountPath: /media
+            - name: appconfig-tdarr
+              subPathExpr: tdarr/configs-$(nodeName)
+              mountPath: /app/configs
+            - name: appconfig-tdarr
+              mountPath: /app/server
+              subPath: server
+          ports:
+            - containerPort: 8266
+          env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+            - name: nodeName
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: serverPort
+              value: "8266"
+            - name: serverIP
+              value: "tdarr-server"
+            - name: inContainer
+              value: "true"
+      volumes:
+        - name: appconfig-tdarr
+          persistentVolumeClaim:
+            claimName: appconfig-tdarr-server
+        - name: media-tdarr
+          persistentVolumeClaim:
+            claimName: media-tdarr
+        - name: cache
+          persistentVolumeClaim:
+            claimName: media-tdarr-cache

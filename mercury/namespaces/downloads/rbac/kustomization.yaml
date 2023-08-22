@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - "system:prowlarr:scc:privileged.yaml"
+  - "system:sonarr:scc:privileged.yaml"
+  - "system:radarr:scc:privileged.yaml"
+  - "system:readarr:scc:privileged.yaml"
+  - "system:lidarr:scc:privileged.yaml"
+  - "system:deluge:scc:privileged.yaml"
+  - "system:firefox-downloads:scc:privileged.yaml"

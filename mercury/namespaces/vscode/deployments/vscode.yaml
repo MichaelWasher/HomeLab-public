@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: code
+  name: code
+  namespace: vscode
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: code
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        openshift.io/scc: privileged
+      labels:
+        app: code
+    spec:
+      containers:
+      - image: lscr.io/linuxserver/code-server:latest
+        imagePullPolicy: Always
+        name: code-server
+        env:
+        - name: TZ
+          value: Australia/Brisbane
+        - name: DEFAULT_WORKSPACE
+          value: /sourcecode
+        ports:
+        - containerPort: 8443
+        volumeMounts:
+        - name: sourcecode
+          mountPath: /sourcecode
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: sourcecode
+        persistentVolumeClaim:
+          claimName: vscode-sourcecode
+      - name: config
+        persistentVolumeClaim:
+          claimName: appconfig-vscode
+      serviceAccount: vscode
+      serviceAccountName: vscode
+      securityContext:
+        runAsUser: 0
