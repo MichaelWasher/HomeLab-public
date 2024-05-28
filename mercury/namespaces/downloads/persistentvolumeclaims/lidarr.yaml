@@ -1,14 +1,14 @@
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: appconfig-lidarr
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 50Mi
----
+# kind: PersistentVolumeClaim
+# apiVersion: v1
+# metadata:
+#   name: appconfig-lidarr
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 50Mi
+# ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -32,3 +32,17 @@ spec:
   resources:
     requests:
       storage: 100Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-lidarr-config
+  namespace: downloads
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: local
+  volumeName: local-lidarr-config

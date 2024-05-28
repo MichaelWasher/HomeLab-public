@@ -34,6 +34,8 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
+          securityContext:
+            privileged: true
           env:
             - name: PUID
               value: "1000"
@@ -85,7 +87,7 @@ spec:
             claimName: media-movies-radarr
         - name: config-vol
           persistentVolumeClaim:
-            claimName: appconfig-radarr
+            claimName: local-radarr-config
         - name: download-vol
           persistentVolumeClaim:
             claimName: torrents-radarr

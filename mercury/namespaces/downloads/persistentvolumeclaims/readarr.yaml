@@ -3,11 +3,13 @@ apiVersion: v1
 metadata:
   name: appconfig-readarr
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 50Mi
+
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

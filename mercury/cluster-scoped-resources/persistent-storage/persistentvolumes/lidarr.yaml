@@ -57,3 +57,29 @@ spec:
   nfs:
     path: /Torrents
     server: 192.168.1.100
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    type: local
+  name: local-lidarr-config
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  claimRef:
+    name: local-lidarr-config
+    namespace: downloads
+  hostPath:
+    path: /mnt/emptydirs/lidarr
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - op3
+  storageClassName: local

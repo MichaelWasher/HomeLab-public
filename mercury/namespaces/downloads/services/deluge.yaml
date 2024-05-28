@@ -23,6 +23,7 @@ kind: Service
 metadata:
   name: deluge
 spec:
+  clusterIP: 172.30.57.131
   type: ClusterIP
   selector:
     app: deluge

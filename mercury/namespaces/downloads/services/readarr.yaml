@@ -11,3 +11,4 @@ spec:
       port: 80
       protocol: TCP
       name: http
+  clusterIP: 172.30.40.47

@@ -50,9 +50,7 @@ spec:
             - name: PGID
               value: "1000"
             - name: TZ
-              value: "Pacific/Auckland"
-            - name: DELUGE_LOGLEVEL
-              value: debug
+              value: "Australia/Brisbane"
           ports:
             - containerPort: 50123 #utp
               protocol: TCP

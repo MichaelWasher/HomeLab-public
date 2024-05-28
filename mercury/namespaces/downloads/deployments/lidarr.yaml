@@ -34,6 +34,8 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
+          securityContext:
+            privileged: true
           env:
             - name: PUID
               value: "1000"
@@ -42,7 +44,7 @@ spec:
             - name: UMASK_SET
               value: "022"
             - name: TZ
-              value: "Pacific/Auckland"
+              value: "Australia/Brisbane"
           ports:
             - containerPort: 8686 #Web
           volumeMounts:
@@ -84,7 +86,7 @@ spec:
             claimName: media-music-lidarr
         - name: config-vol
           persistentVolumeClaim:
-            claimName: appconfig-lidarr
+            claimName: local-lidarr-config
         - name: download-vol
           persistentVolumeClaim:
             claimName: torrents-lidarr
