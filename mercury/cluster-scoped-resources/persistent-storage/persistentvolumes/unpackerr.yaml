@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: appconfig-unpackerr
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: appconfig-unpackerr
+    namespace: downloads
+  storageClassName: manual
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Unpackerr
+    server: 192.168.1.100
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: torrents-unpackerr
+  labels:
+    type: local
+spec:
+  claimRef:
+    name: torrents-unpackerr
+    namespace: downloads
+  storageClassName: manual
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /Torrents
+    server: 192.168.1.100

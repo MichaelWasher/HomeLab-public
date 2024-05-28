@@ -8,3 +8,4 @@ resources:
   - readarr.yaml
   - deluge.yaml
   - firefox.yaml
+  - unpackerr.yaml

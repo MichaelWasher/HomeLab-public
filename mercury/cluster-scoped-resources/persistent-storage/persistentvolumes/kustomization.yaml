@@ -21,3 +21,4 @@ resources:
 - nodered.yaml
 - ombi-config.yaml
 - overseerr.yaml
+- unpackerr.yaml

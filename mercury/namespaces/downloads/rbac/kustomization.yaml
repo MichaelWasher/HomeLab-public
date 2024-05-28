@@ -8,3 +8,4 @@ resources:
   - "system:lidarr:scc:privileged.yaml"
   - "system:deluge:scc:privileged.yaml"
   - "system:firefox-downloads:scc:privileged.yaml"
+  - "system:unpackerr:scc:privileged.yaml"
