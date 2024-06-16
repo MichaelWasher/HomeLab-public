@@ -6,11 +6,11 @@ namespace: home-automation
 resources:
 - ns.yaml
 - configmaps
-- secrets
+# Remove KSOPs Configuration to private repo
+# - secrets
 - deployments
 - ingress
 - rbac
 - persistentvolumeclaims
 - services
 - serviceaccounts
-# - haas_config.yaml

@@ -76,7 +76,8 @@ spec:
         terminationMessagePolicy: File
         volumeMounts:
         - mountPath: /config
-          name: config
+          name: frigate-media
+          subPath: config/
         - mountPath: /data
           name: data
         - mountPath: /media
@@ -88,11 +89,8 @@ spec:
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 30
       volumes:
-      - configMap:
-          defaultMode: 420
-          name: frigate-config
-        name: config
       - name: data
+        emptyDir: {}
       - name: frigate-media
         persistentVolumeClaim:
           claimName: frigate-media

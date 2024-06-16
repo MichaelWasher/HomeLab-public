@@ -3,5 +3,4 @@ kind: Kustomization
 
 resources:
 - mosquitto.yaml
-- frigate.yaml
 - zigbee2mqtt.yaml
