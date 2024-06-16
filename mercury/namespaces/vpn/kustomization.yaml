@@ -9,5 +9,4 @@ resources:
 - networkpolicies
 - serviceaccounts
 - rbac
-- secrets
 - services

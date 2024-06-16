@@ -6,5 +6,4 @@ resources:
 - ns.yaml
 - deployments
 - rbac
-- secrets
 - serviceaccounts
