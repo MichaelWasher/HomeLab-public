@@ -16,7 +16,7 @@ spec:
     - ReadWriteOnce
   nfs:
       path: /Deluge
-      server: 192.168.1.100
+      server: 192.168.2.100
 
 ---
 apiVersion: v1
@@ -36,7 +36,7 @@ spec:
     - ReadWriteOnce
   nfs:
       path: /Movies
-      server: 192.168.1.100
+      server: 192.168.2.100
 
 ---
 apiVersion: v1
@@ -56,4 +56,4 @@ spec:
     - ReadWriteOnce
   nfs:
     path: /Torrents
-    server: 192.168.1.100
+    server: 192.168.2.100

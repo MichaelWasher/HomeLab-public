@@ -11,11 +11,11 @@ spec:
         - name: nfs-client-provisioner
           env:
             - name: NFS_SERVER
-              value: 192.168.1.100
+              value: 192.168.2.100
             - name: NFS_PATH
               value: /NFS-Provisioner/
       volumes:
         - name: nfs-client-root
           nfs:
-            server: 192.168.1.100
+            server: 192.168.2.100
             path: /NFS-Provisioner/

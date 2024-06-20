@@ -16,4 +16,4 @@ spec:
     - ReadWriteOnce
   nfs:
       path: /PiHole
-      server: 192.168.1.100
+      server: 192.168.2.100
