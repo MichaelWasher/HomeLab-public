@@ -13,9 +13,16 @@ spec:
     storage: 500Mi
   accessModes:
     - ReadWriteOnce
-  nfs:
-    path: /Readarr
-    server: 192.168.2.100
+  hostPath:
+    path: /mnt/emptydirs/readarr
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - op3
 
 
 ---
