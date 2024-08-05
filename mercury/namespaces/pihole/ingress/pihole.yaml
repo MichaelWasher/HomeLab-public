@@ -5,7 +5,7 @@ metadata:
   annotations:
     haproxy.router.openshift.io/rewrite-target: "/admin/"
 spec:
-  host: pihole.apps.mercury.michael-washer.com
+  host: pihole.apps.mars.michael-washer.com
   port:
     targetPort: http
   to:

@@ -6,7 +6,7 @@ metadata:
   name: nodered
   namespace: home-automation
 spec:
-  host: nodered.apps.mercury.michael-washer.com
+  host: nodered.apps.mars.michael-washer.com
   path: /
   to:
     kind: Service

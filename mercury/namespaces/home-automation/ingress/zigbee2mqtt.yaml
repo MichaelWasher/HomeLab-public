@@ -6,7 +6,7 @@ metadata:
   name: zigbee2mqtt
   namespace: home-automation
 spec:
-  host: zigbee2mqtt.apps.mercury.michael-washer.com
+  host: zigbee2mqtt.apps.mars.michael-washer.com
   path: /
   to:
     kind: Service

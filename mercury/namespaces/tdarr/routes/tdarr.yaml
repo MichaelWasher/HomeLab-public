@@ -4,7 +4,7 @@ metadata:
   name: tdarr
   namespace: tdarr
 spec:
-  host: tdarr.apps.mercury.michael-washer.com
+  host: tdarr.apps.mars.michael-washer.com
   port:
     targetPort: 8265
   to:

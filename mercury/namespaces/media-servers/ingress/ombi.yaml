@@ -12,11 +12,11 @@ metadata:
 spec:
   tls:
     - hosts:
-      - ombi.apps.mercury.michael-washer.com
+      - ombi.apps.mars.michael-washer.com
       secretName: ombi-tls
   ingressClassName: openshift-default
   rules:
-    - host: ombi.apps.mercury.michael-washer.com
+    - host: ombi.apps.mars.michael-washer.com
       http:
         paths:
           - pathType: Prefix

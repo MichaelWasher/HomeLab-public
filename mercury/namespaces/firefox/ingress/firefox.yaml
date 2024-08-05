@@ -3,7 +3,7 @@ kind: Route
 metadata:
   name: firefox
 spec:
-  host: firefox.apps.mercury.michael-washer.com
+  host: firefox.apps.mars.michael-washer.com
   path: /
   port:
     targetPort: http

@@ -12,11 +12,11 @@ metadata:
 spec:
   tls:
     - hosts:
-      - jellyfin.apps.mercury.michael-washer.com
+      - jellyfin.apps.mars.michael-washer.com
       secretName: jellyfin-tls
   ingressClassName: openshift-default
   rules:
-    - host: jellyfin.apps.mercury.michael-washer.com
+    - host: jellyfin.apps.mars.michael-washer.com
       http:
         paths:
           - pathType: Prefix

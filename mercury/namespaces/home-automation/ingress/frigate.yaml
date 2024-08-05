@@ -3,7 +3,7 @@ kind: Route
 metadata:
   name: frigate
 spec:
-  host: frigate.apps.mercury.michael-washer.com
+  host: frigate.apps.mars.michael-washer.com
   path: /
   port:
     targetPort: http

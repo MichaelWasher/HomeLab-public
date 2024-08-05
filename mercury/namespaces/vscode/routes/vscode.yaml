@@ -6,7 +6,7 @@ metadata:
   name: code
   namespace: vscode
 spec:
-  host: vscode.apps.mercury.michael-washer.com
+  host: vscode.apps.mars.michael-washer.com
   port:
     targetPort: 8443
   to:

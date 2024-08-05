@@ -3,7 +3,7 @@ kind: Route
 metadata:
   name: qnap
 spec: 
-  host: qnap.apps.mercury.michael-washer.com
+  host: qnap.apps.mars.michael-washer.com
   port:
     targetPort: 8080
   to:

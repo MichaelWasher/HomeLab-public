@@ -58,7 +58,7 @@ spec:
             - name: NVIDIA_DRIVER_CAPABILITIES
               value: compute,video,utility
             - name: JELLYFIN_PublishedServerUrl
-              value: jellyfin.apps.mercury.michael-washer.com
+              value: jellyfin.apps.mars.michael-washer.com
           volumeMounts:
             - name: device
               mountPath: /dev
