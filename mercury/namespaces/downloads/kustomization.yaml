@@ -6,6 +6,7 @@ resources:
   - configmaps
   - deployments
   - persistentvolumeclaims
+  - persistentvolumes
   - networkpolicies
   - rbac
   - serviceaccounts

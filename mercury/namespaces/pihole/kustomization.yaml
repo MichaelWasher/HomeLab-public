@@ -8,6 +8,7 @@ resources:
 - deployments
 - ingress
 - persistentvolumeclaims
+- persistentvolumes
 - serviceaccounts
 - rbac
 - services

@@ -10,3 +10,4 @@ resources:
 - services
 - serviceaccounts
 - persistentvolumeclaims
+- persistentvolumes

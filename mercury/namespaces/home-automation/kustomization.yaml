@@ -12,5 +12,6 @@ resources:
 - ingress
 - rbac
 - persistentvolumeclaims
+- persistentvolumes
 - services
 - serviceaccounts

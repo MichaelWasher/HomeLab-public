@@ -6,6 +6,7 @@ resources:
 - ns.yaml
 - deployments
 - persistentvolumeclaims
+- persistentvolumes
 - rbac
 - routes
 - services
