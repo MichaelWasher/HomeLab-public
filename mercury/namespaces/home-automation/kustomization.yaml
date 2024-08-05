@@ -15,3 +15,4 @@ resources:
 - persistentvolumes
 - services
 - serviceaccounts
+- networkattachmentdefinitions
