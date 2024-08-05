@@ -19,7 +19,5 @@ spec:
         # Limit DNS zones which use the API token
         selector:
           dnsZones:
-            - "prod.k.michael-washer.dev"
-            - "dev.k.michael-washer.dev"
             - "mercury.michael-washer.com"
-
+            - "mars.michael-washer.com"
