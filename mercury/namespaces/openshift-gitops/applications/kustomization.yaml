@@ -16,3 +16,4 @@ resources:
 - pihole.yaml
 - vpn.yaml
 - monitoring.yaml
+- openshift-gitops.yaml
