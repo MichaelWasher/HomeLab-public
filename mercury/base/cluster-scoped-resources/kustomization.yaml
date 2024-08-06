@@ -4,4 +4,5 @@ kind: Kustomization
 resources:
 - persistent-storage
 - machineconfiguration
-- cert-manager
+- users
+- rbac

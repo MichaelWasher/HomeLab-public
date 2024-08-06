@@ -3,4 +3,4 @@ kind: Kustomization
 
 namespace: openshift-ingress-operator
 resources:
-- ingress-controller.yaml
+- default-ingress-controller.yaml

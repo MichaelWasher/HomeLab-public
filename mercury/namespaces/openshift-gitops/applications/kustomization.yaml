@@ -17,3 +17,4 @@ resources:
 - vpn.yaml
 - monitoring.yaml
 - openshift-gitops.yaml
+- base.yaml

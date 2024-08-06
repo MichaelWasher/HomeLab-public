@@ -6,8 +6,8 @@ metadata:
 spec:
   secretName: default-ingress-certificate
   dnsNames:
-  - "*.apps.mercury.michael-washer.com"
-  - "*.mercury.michael-washer.com"
+  - "*.apps.mars.michael-washer.com"
+  - "*.mars.michael-washer.com"
   issuerRef:
     group: cert-manager.io
     kind: ClusterIssuer

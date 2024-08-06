@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: base
+  namespace: openshift-gitops
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+  project: mars-configuration
+  source:
+    path: mercury/base
+    repoURL: git@github.com:MichaelWasher/HomeLab-public.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+
