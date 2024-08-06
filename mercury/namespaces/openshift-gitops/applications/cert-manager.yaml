@@ -1,0 +1,16 @@
+
+
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: openshift-gitops
+spec:
+  project: mars-configuration
+  source:
+    repoURL: 'git@github.com:MichaelWasher/HomeLab-public.git'
+    path: mercury/namespaces/cert-manager
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
