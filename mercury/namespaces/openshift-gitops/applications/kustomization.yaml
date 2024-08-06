@@ -15,3 +15,4 @@ resources:
 - nfs-provisioner.yaml
 - pihole.yaml
 - vpn.yaml
+- monitoring.yaml
