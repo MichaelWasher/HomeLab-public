@@ -6,7 +6,7 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: manual
+  storageClassName: local
   capacity:
     storage: 4Gi
   claimRef:
@@ -14,6 +14,5 @@ spec:
     namespace: home-automation
   accessModes:
     - ReadWriteOnce
-  nfs:
-      path: /MySQL
-      server: 192.168.2.100
+  hostPath:
+    path: /mnt/emptydirs/haas-mysql

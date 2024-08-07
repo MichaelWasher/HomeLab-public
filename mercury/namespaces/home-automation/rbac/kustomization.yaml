@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
 - "system:homeassistant:scc:privileged.yaml"
 - "system:frigate:scc:anyuid.yaml"
-- "system:mysql:scc:anyuid.yaml"
+- "system:mysql:scc:privileged.yaml"
 - "system:zigbee2mqtt:scc:privileged.yaml"
 - "system:nodered:scc:privileged.yaml"
