@@ -7,3 +7,4 @@ resources:
 - "system:mysql:scc:privileged.yaml"
 - "system:zigbee2mqtt:scc:privileged.yaml"
 - "system:nodered:scc:privileged.yaml"
+- "system:influxdb:scc:privileged.yaml"

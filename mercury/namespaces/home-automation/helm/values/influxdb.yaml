@@ -1,0 +1,18 @@
+env: 
+  - name: DOCKER_INFLUXDB_INIT_MODE
+    value: "setup"
+
+  - name: DOCKER_INFLUXDB_INIT_USERNAME
+    value: "influxdb"
+
+  - name: DOCKER_INFLUXDB_INIT_PASSWORD
+    value: "influxdb"
+
+  - name: DOCKER_INFLUXDB_INIT_ORG
+    value: "homeassistant"
+
+  - name: DOCKER_INFLUXDB_INIT_BUCKET
+    value: "homeassistant"
+
+  - name: INFLUXDB_DB
+    value: "homeassistant"

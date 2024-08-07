@@ -6,8 +6,7 @@ namespace: home-automation
 resources:
 - ns.yaml
 - configmaps
-# Remove KSOPs Configuration to private repo
-# - secrets
+- helm
 - deployments
 - ingress
 - rbac

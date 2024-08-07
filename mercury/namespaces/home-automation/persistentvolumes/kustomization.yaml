@@ -7,3 +7,4 @@ resources:
 - mysql.yaml
 - zigbee2mqtt.yaml
 - nodered.yaml
+- influxdb.yaml

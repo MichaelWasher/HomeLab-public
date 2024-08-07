@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+- name: influxdb
+  repo: https://helm.influxdata.com/
+  releaseName: influxdb
+  namespace: home-automation
+  valuesFile: values/influxdb.yaml
+- name: chronograf
+  repo: https://helm.influxdata.com/
+  releaseName: influxdb-chronograf
+  namespace: home-automation
+  valuesFile: values/chronograf.yaml
